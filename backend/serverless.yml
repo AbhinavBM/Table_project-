@@ -1,0 +1,53 @@
+service: new-final
+
+frameworkVersion: '3'
+
+provider:
+  stage: prod
+  name: aws
+  runtime: nodejs18.x  # Use an appropriate Node.js runtime version
+  memorySize: 3008
+  region: ap-south-1
+
+functions:
+  api:
+    handler: index.handler
+    events:
+      - httpApi: '*'
+   
+  websocketConnect:
+    handler: server.handler
+    events:
+      - websocket:
+          route: $connect
+
+  websocketDisconnect:
+    handler: server.handler
+    events:
+      - websocket:
+          route: $disconnect
+
+  websocketDefault:
+    handler: server.handler
+    events:
+      - websocket:
+          route: $default
+
+  websocketSetName:
+    handler: server.handler
+    events:
+      - websocket:
+          route: setName
+
+  websocketSendPublic:
+    handler: server.handler
+    events:
+      - websocket:
+          route: sendPublic
+
+  websocketSendPrivate:
+    handler: server.handler
+    events:
+      - websocket:
+          route: sendPrivate
+  
